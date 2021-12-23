@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\MicrosoftBot\MessageTemplates\OutgoingListMessage;
+namespace MicrosoftTeamsDriver\Cards\OutgoingListCard;
 
-use App\Services\MicrosoftBot\CardActions\TapAction;
-use App\Services\MicrosoftBot\MessageTemplates\OutgoingListMessage\Items\ResultItem;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use MicrosoftTeamsDriver\Cards\Actions\TapAction;
+use MicrosoftTeamsDriver\Cards\OutgoingListCard\Items\ResultItem;
 
 class ListMessageBuilder
 {

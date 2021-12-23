@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\MicrosoftBot\MessageTemplates\OutgoingListMessage;
+namespace MicrosoftTeamsDriver\Cards\OutgoingListCard;
 
-use App\Services\MicrosoftBot\MessageTemplates\CardMessage;
+use MicrosoftTeamsDriver\Cards\CardMessage;
 
 /**
  * @see https://docs.microsoft.com/en-us/microsoftteams/platform/task-modules-and-cards/cards/cards-reference#list-card
@@ -38,6 +38,15 @@ class OutgoingListMessage implements CardMessage
     {
         $this->buttons[] = $button;
         return $this;
+    }
+
+    public function getContent(): array
+    {
+        return [
+            'title' => $this->title,
+            'items' => $this->items,
+            'buttons' => $this->convertQuestion($message),
+        ];
     }
 }
 

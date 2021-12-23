@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Services\MicrosoftBot\MessageTemplates\Office365ConnectorCard;
-
+namespace MicrosoftTeamsDriver\Cards\Office365ConnectorCard;
 
 use MicrosoftTeamsDriver\Cards\CardMessage;
-use MicrosoftTeamsDriver\Cards\Office365ConnectorCard\ConnectorCardActions;
-use MicrosoftTeamsDriver\Cards\Office365ConnectorCard\ConnectorCardSections;
 use MicrosoftTeamsDriver\Cards\Office365ConnectorCard\Sections\SimpleSection;
 
 /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\MicrosoftBot\MessageTemplates\OutgoingListMessage\Items;
+namespace MicrosoftTeamsDriver\Cards\OutgoingListCard\Items;
 
-use App\Services\MicrosoftBot\CardActions\TapAction;
 use Illuminate\Support\Collection;
+use MicrosoftTeamsDriver\Cards\Actions\TapAction;
 
 class ResultItem
 {

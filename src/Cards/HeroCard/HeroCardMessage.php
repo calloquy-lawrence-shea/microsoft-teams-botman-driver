@@ -2,8 +2,7 @@
 
 namespace MicrosoftTeamsDriver\Cards\HeroCard;
 
-use App\Services\MicrosoftBot\CardActions\TapAction;
-use App\Services\MicrosoftBot\MessageTemplates\CardMessage;
+use MicrosoftTeamsDriver\Cards\CardMessage;
 
 /**
  * @see https://docs.microsoft.com/en-us/microsoftteams/platform/task-modules-and-cards/cards/cards-reference#hero-card

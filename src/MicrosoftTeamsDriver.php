@@ -2,11 +2,6 @@
 
 namespace MicrosoftTeamsDriver;
 
-use App\Services\MicrosoftBot\CardActions\TapAction;
-use App\Services\MicrosoftBot\MessageTemplates\HeroCard\HeroCardMessage;
-use App\Services\MicrosoftBot\MessageTemplates\Office365ConnectorCard\Office365ConnectorMessage;
-use App\Services\MicrosoftBot\MessageTemplates\OutgoingAdaptiveCard\OutgoingAdaptiveCardMessage;
-use App\Services\MicrosoftBot\MessageTemplates\OutgoingListMessage\OutgoingListMessage;
 use BotMan\BotMan\Drivers\Events\GenericEvent;
 use BotMan\BotMan\Messages\Attachments\File;
 use BotMan\BotMan\Messages\Attachments\Image;
@@ -17,7 +12,11 @@ use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\Drivers\BotFramework\BotFrameworkDriver;
 use Illuminate\Support\Collection;
-use Microsoft\Graph\Graph;
+use MicrosoftTeamsDriver\Cards\Actions\TapAction;
+use MicrosoftTeamsDriver\Cards\HeroCard\HeroCardMessage;
+use MicrosoftTeamsDriver\Cards\Office365ConnectorCard\Office365ConnectorMessage;
+use MicrosoftTeamsDriver\Cards\OutgoingAdaptiveCard\OutgoingAdaptiveCardMessage;
+use MicrosoftTeamsDriver\Cards\OutgoingListCard\OutgoingListMessage;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class MicrosoftTeamsDriver extends BotFrameworkDriver
@@ -202,14 +201,14 @@ class MicrosoftTeamsDriver extends BotFrameworkDriver
      */
     private function setOutgoingListMessage($message, array &$parameters): void
     {
+        $content = $message->getContent();
+
+        $content['buttons'] = $this->convertQuestion($message);
+
         $parameters['attachments'] = [
             [
                 'contentType' => 'application/vnd.microsoft.teams.card.list',
-                'content' => [
-                    'title' => $message->getTitle(),
-                    'items' => $message->getItems(),
-                    'buttons' => $this->convertQuestion($message),
-                ],
+                'content' => $content,
             ],
         ];
     }
@@ -245,65 +244,5 @@ class MicrosoftTeamsDriver extends BotFrameworkDriver
         }
 
         return Answer::create($message->getText())->setMessage($message);
-    }
-
-    public function getUserDetails()
-    {
-        /*$headers = [
-            'Content-Type:application/json',
-            'Authorization:Bearer '.$this->getAccessToken(),
-        ];*/
-
-        $guzzle = new \GuzzleHttp\Client();
-
-        /*$url = 'https://login.microsoftonline.com/common/adminconsent';
-
-        $res = $guzzle->get($url, [
-            'query' => [
-                'client_id' => $this->config->get('app_id'),
-                'redirect_uri' => 'https://9ed5-159-224-140-192.ngrok.io/microsoft/permissions'
-            ],
-        ]);
-
-        var_dump($res->getBody()->getContents());
-        exit;
-
-        $url = 'https://9ed5-159-224-140-192.ngrok.io/microsoft/permissions';
-
-        $res = $guzzle->get($url, [
-            'form_params' => [
-                'client_id' => $this->config->get('app_id'),
-                'redirect_uri' => 'https://9ed5-159-224-140-192.ngrok.io/microsoft/permissions'
-            ],
-        ]);
-
-        var_dump($res);
-        exit;*/
-
-        $url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token';
-        $token = json_decode($guzzle->post($url, [
-            'form_params' => [
-                'client_id' => $this->config->get('app_id'),
-                'client_secret' => $this->config->get('app_key'),
-                'grant_type' => 'client_credentials',
-                'scope' => 'https://graph.microsoft.com/.default'
-            ],
-        ])->getBody()->getContents());
-
-        $accessToken = $token->access_token;
-
-        $graph = new Graph();
-        $graph->setAccessToken($accessToken);
-
-        try {
-            $res = $graph
-                ->createRequest('GET', '/users/19f36b93-fdd1-48bb-b498-fd9e4d13e251')
-                ->execute();
-            var_dump($res);
-        } catch (\Throwable $exception) {
-            var_dump($exception->getMessage());
-        }
-
-        exit;
     }
 }
