@@ -5,12 +5,11 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
+- preparation
 - test
 - testing
 
 composer:
-  only:
-    - /^new$/
   stage: preparation
   script:
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
