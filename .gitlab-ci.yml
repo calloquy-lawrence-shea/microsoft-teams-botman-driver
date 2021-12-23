@@ -6,6 +6,34 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
 - test
+- testing
+
+composer:
+  only:
+    - /^new$/
+  stage: preparation
+  script:
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php');"
+    - ./composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - vendor/
+    expire_in: 1 days
+    when: always
+  cache:
+    paths:
+      - vendor/
+
+unit_testing:
+  stage: testing
+  dependencies:
+    - composer
+  script:
+    - ./vendor/bin/phpunit tests/
+
 sast:
   stage: test
 include:
