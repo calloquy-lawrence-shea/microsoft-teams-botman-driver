@@ -11,6 +11,18 @@ Interactive answers to questions now always come in an array.
 $value = $answer->getValue();
 ```
 
+Added support for events.
+
+1. Conversation Update
+2. Installation Update
+3. Message Reaction
+
+```php
+$bot->on(MicrosoftTeamsDriver::INSTALLATION_UPDATE_EVENT, function ($payload, BotMan $bot) {
+    $bot->reply('Please type ```start``` to begin using the bot');
+});
+```
+
 ### Cards
 
 New power systems are now available that the standard driver does not support.
