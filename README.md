@@ -1,3 +1,7 @@
+### Install
+
+```composer create-project itsimiro/microsoft-teams-botman-driver```
+
 ### A basic guide to Botman.
 
 [Documentation](https://botman.io/2.0/driver-ms-bot-framework)
